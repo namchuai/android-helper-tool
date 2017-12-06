@@ -8,25 +8,37 @@ class Application(Frame):
     def increaseVolume(self):
         subprocess.call(['adb','shell','input','keyevent','24'])
 
+    def dumpLog(self):
+        subprocess.call(['adb','shell','am','broadcast', '-a','com.honda.auto.diagnostics.SCREENSHOT'])
+
+    def triggerDiagnostic(self):
+        print('Not supported')
+        # subprocess.call(['adb','shell','am','broadcast', '-a','com.honda.auto.diagnostics.dealer.MAIN'])
+
     def createWidgets(self):
-        self.QUIT = Button(self)
-        self.QUIT["text"] = "QUIT"
-        self.QUIT["fg"]   = "red"
-        self.QUIT["command"] =  self.quit
-
-        self.QUIT.pack({"side": "left"})
-
-        self.decrease_volume = Button(self)
-        self.decrease_volume["text"] = "Decrease Volume",
-        self.decrease_volume["command"] = self.decreaseVolume
-
-        self.decrease_volume.pack({"side": "left"})
-
         self.increase_volume = Button(self)
-        self.increase_volume["text"] = "Increase Volume",
+        self.increase_volume["text"] = "Volume up",
         self.increase_volume["command"] = self.increaseVolume
 
-        self.increase_volume.pack({"side": "left"})
+        self.increase_volume.pack(padx=10, ipady=10, side=LEFT)
+
+        self.triger_diagnostic = Button(self)
+        self.triger_diagnostic["text"] = "Open Diagnostic",
+        self.triger_diagnostic["command"] = self.triggerDiagnostic
+
+        self.triger_diagnostic.pack(padx=10, ipady=10, side=LEFT)
+
+        self.decrease_volume = Button(self)
+        self.decrease_volume["text"] = "Volume down",
+        self.decrease_volume["command"] = self.decreaseVolume
+
+        self.decrease_volume.pack(padx=10, ipady=10, side=RIGHT)
+
+        self.dump_log = Button(self)
+        self.dump_log["text"] = "Dump HARS log",
+        self.dump_log["command"] = self.dumpLog
+
+        self.dump_log.pack(padx=10, ipady=10, side=RIGHT)
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
