@@ -12,8 +12,7 @@ class Application(Frame):
         subprocess.call(['adb','shell','am','broadcast', '-a','com.honda.auto.diagnostics.SCREENSHOT'])
 
     def triggerDiagnostic(self):
-        print('Not supported')
-        # subprocess.call(['adb','shell','am','broadcast', '-a','com.honda.auto.diagnostics.dealer.MAIN'])
+        subprocess.call(['adb','shell','am','start', '-n','com.honda.auto.diagnostics/.dealer.MainActivity'])
 
     def createWidgets(self):
         self.increase_volume = Button(self)
