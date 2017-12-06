@@ -9,7 +9,11 @@ class Application(Frame):
         subprocess.call(['adb','shell','input','keyevent','24'])
 
     def dumpLog(self):
-        print('Not supported yet')
+        subprocess.call(['adb','shell','am','broadcast', '-a','com.honda.auto.diagnostics.SCREENSHOT'])
+
+    def triggerDiagnostic(self):
+        print('Not supported')
+        # subprocess.call(['adb','shell','am','broadcast', '-a','com.honda.auto.diagnostics.dealer.MAIN'])
 
     def createWidgets(self):
         self.increase_volume = Button(self)
@@ -17,6 +21,12 @@ class Application(Frame):
         self.increase_volume["command"] = self.increaseVolume
 
         self.increase_volume.pack(padx=10, ipady=10, side=LEFT)
+
+        self.triger_diagnostic = Button(self)
+        self.triger_diagnostic["text"] = "Open Diagnostic",
+        self.triger_diagnostic["command"] = self.triggerDiagnostic
+
+        self.triger_diagnostic.pack(padx=10, ipady=10, side=LEFT)
 
         self.decrease_volume = Button(self)
         self.decrease_volume["text"] = "Volume down",
