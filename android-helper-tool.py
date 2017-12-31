@@ -1,51 +1,49 @@
-from Tkinter import *
+import Tkinter as tk
 import subprocess
 
-class Application(Frame):
-    def decreaseVolume(self):
-        subprocess.call(['adb','shell','input','keyevent','25'])
+# DEFINE CONSTANTS HERE
+version = 0.1
+versionTitle = "v" + str(version)
+winTitle = "Android helper tool " + versionTitle
 
-    def increaseVolume(self):
-        subprocess.call(['adb','shell','input','keyevent','24'])
+CONST_LOG_SRC_DIR = "/logging/HARS_Reports"
+CONST_HOME_DIR = "~/"
 
-    def dumpLog(self):
-        subprocess.call(['adb','shell','am','broadcast', '-a','com.honda.auto.diagnostics.SCREENSHOT'])
+# FUNCTION GOES HERE
+def decreaseVolume():
+    subprocess.call(['adb','shell','input','keyevent','25'])
 
-    def triggerDiagnostic(self):
-        subprocess.call(['adb','shell','am','start', '-n','com.honda.auto.diagnostics/.dealer.MainActivity'])
+def increaseVolume():
+    subprocess.call(['adb','shell','input','keyevent','24'])
 
-    def createWidgets(self):
-        self.increase_volume = Button(self)
-        self.increase_volume["text"] = "Volume up",
-        self.increase_volume["command"] = self.increaseVolume
+def dumpLog():
+    subprocess.call(['adb','shell','am','broadcast', '-a','com.honda.auto.diagnostics.SCREENSHOT'])
 
-        self.increase_volume.pack(padx=10, ipady=10, side=LEFT)
+def triggerDiagnostic():
+    subprocess.call(['adb','shell','am','start', '-n','com.honda.auto.diagnostics/.dealer.MainActivity'])
 
-        self.triger_diagnostic = Button(self)
-        self.triger_diagnostic["text"] = "Open Diagnostic",
-        self.triger_diagnostic["command"] = self.triggerDiagnostic
+def pullAllLog():
+    subprocess.call(['adb', 'pull', CONST_LOG_SRC_DIR, CONST_HOME_DIR])
 
-        self.triger_diagnostic.pack(padx=10, ipady=10, side=LEFT)
+def clearLogCatBuffer():
+    subprocess.call(['adb', 'logcat', '-c'])
 
-        self.decrease_volume = Button(self)
-        self.decrease_volume["text"] = "Volume down",
-        self.decrease_volume["command"] = self.decreaseVolume
+root = tk.Tk()
 
-        self.decrease_volume.pack(padx=10, ipady=10, side=RIGHT)
+root.title(winTitle)
 
-        self.dump_log = Button(self)
-        self.dump_log["text"] = "Dump HARS log",
-        self.dump_log["command"] = self.dumpLog
+btnDecreaseVolume = tk.Button(root, text="Decrease volume", width=25, command=decreaseVolume)
+btnIncreaseVolume = tk.Button(root, text="Increase volume", width=25, command=increaseVolume)
+btnOpenDiagnostic = tk.Button(root, text="Open diagnostics", width=25, command=triggerDiagnostic)
+btnDumpLog = tk.Button(root, text="Dump log", width=25, command=dumpLog)
+btnPullLog = tk.Button(root, text="Pull log", width=25, command=pullAllLog)
+btnClearLogcatBuffer = tk.Button(root, text="Clear logcat buffer", width=25, command=clearLogCatBuffer)
 
-        self.dump_log.pack(padx=10, ipady=10, side=RIGHT)
+btnDecreaseVolume.pack()
+btnIncreaseVolume.pack()
+btnOpenDiagnostic.pack()
+btnDumpLog.pack()
+btnPullLog.pack()
+btnClearLogcatBuffer.pack()
 
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.pack()
-        self.createWidgets()
-
-root = Tk()
-root.title("Android helper tool")
-app = Application(master=root)
-app.mainloop()
-root.destroy()
+root.mainloop()
